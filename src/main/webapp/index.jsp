@@ -221,7 +221,7 @@
                         </a>
 	                    </span>
     </li>
-    <li>Choose <code>Auto detected project</code>
+    <li>Choose <code>Auto detected projects</code>
 
       <div class="modal hide" id="importApp3">
         <div class="modal-header">
