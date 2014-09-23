@@ -9,23 +9,36 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.example.model.Person;
+import com.example.service.CampaignService;
 import com.example.service.PersonService;
 
 import java.util.Map;
 
 @Controller
+@RequestMapping("/people")
 public class PersonController {
 
     @Autowired
     private PersonService personService;
+    @Autowired
+    private CampaignService campaignService;
 
-    @RequestMapping("/")
+    @RequestMapping("/listpeople")
     public String listPeople(Map<String, Object> map) {
 
         map.put("person", new Person());
         map.put("peopleList", personService.listPeople());
+        System.out.println(campaignService.listCampaign().get(0));
 
         return "people";
+    }
+    
+    @RequestMapping("/test")
+    public String test(Map<String, Object> map) {
+
+       
+
+        return "test";
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
