@@ -14,32 +14,32 @@ import com.example.service.CampaignService;
 @Controller
 @RequestMapping("/test")
 public class HelloController{
-	
+
 	@Autowired
-    private CampaignService campaignService;
- 
-   @RequestMapping("/")
-   public String printHello(ModelMap model) {
-      model.addAttribute("message", "Hello Spring MVC Framework!");
+	private CampaignService campaignService;
 
-      return "test";
-   }
-   
-   @RequestMapping(value = "/listcampaign", method = RequestMethod.GET)
-   public String listCampaign(Map<String, Object> map) {
-	   System.out.println(campaignService.listCampaign().get(0));
+	@RequestMapping("/")
+	public String printHello(ModelMap model) {
+		model.addAttribute("message", "Hello Spring MVC Framework!");
 
-	   map.put("campaignList", campaignService.listCampaign());
+		return "test";
+	}
 
-	   return "test";
-   }
-   
-   @RequestMapping("/get/{name}")
-   public String deletePerson(@PathVariable("name") String name) {
+	@RequestMapping(value = "/listcampaign", method = RequestMethod.GET)
+	public String listCampaign(Map<String, Object> map) {
+		System.out.println(campaignService.listCampaign().get(0));
 
-       System.out.println(campaignService.getCampaign(name));
+		map.put("campaignList", campaignService.listCampaign());
 
-       return "test";
-   }
+		return "test";
+	}
+
+	@RequestMapping("/get/{name}")
+	public String deletePerson(@PathVariable("name") String name) {
+
+		System.out.println(campaignService.getCampaign(name));
+
+		return "test";
+	}
 
 }

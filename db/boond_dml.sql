@@ -1,1 +1,3 @@
 insert into userAccount (firstName,lastName,emailId,createdDate,lastUpdatedDate) values('Ankur','Bansal','aankur.bansal@gmail.com',now(),now());
+insert into donors (campaignid,userAccountId,donationAmount,isDonationAnonymous,isDonationCompleted,createdDate,lastUpdatedDate) values(1,1,99,false,true,now(),now());
+insert into donors (campaignid,userAccountId,donationAmount,isDonationAnonymous,isDonationCompleted,createdDate,lastUpdatedDate) values(1,2,79,false,true,now(),now());
