@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.model.UserAccount;
 import com.example.service.UserService;
@@ -16,8 +17,8 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
-	@RequestMapping("/{id}")
-	public String getUser(@PathVariable("id") Integer id, ModelMap map) {
+	@RequestMapping("/{id} ")
+	public @ResponseBody UserAccount getUser(@PathVariable("id") Integer id, ModelMap map) {
 		UserAccount user = userService.getUserAccountDetails(id);
 		String output;
 		if(user == null){
@@ -27,7 +28,7 @@ public class UserController {
 		}
 
 		map.addAttribute("message", output);
-		return "test";
+		return user;
 	}
 
 
