@@ -1,0 +1,1 @@
+insert into userAccount (firstName,lastName,emailId,createdDate,lastUpdatedDate) values('Ankur','Bansal','aankur.bansal@gmail.com',now(),now());

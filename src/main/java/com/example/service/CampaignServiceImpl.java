@@ -1,6 +1,5 @@
 package com.example.service;
 
-import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -32,10 +31,9 @@ public class CampaignServiceImpl implements CampaignService {
 		query.setParameter("value", name);
 		List<Campaign> list = query.getResultList();
 		System.out.println(list.get(0).getValue());
-		if(list!=null || !list.isEmpty()){
+		if(list!=null && !list.isEmpty()){
 			return list.get(0);
 		}
-		// TODO Auto-generated method stub
 		return null;
 	}
 
