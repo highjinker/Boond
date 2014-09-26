@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,11 +9,13 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.example.model.Campaign;
 import com.example.service.CampaignService;
 
 @Controller
-@RequestMapping("/test")
+@RequestMapping("/campaign")
 public class HelloController{
 
 	@Autowired
@@ -26,20 +29,30 @@ public class HelloController{
 	}
 
 	@RequestMapping(value = "/listcampaign", method = RequestMethod.GET)
-	public String listCampaign(Map<String, Object> map) {
-		System.out.println(campaignService.listCampaign().get(0));
-
+	public @ResponseBody List<Campaign> listCampaign(Map<String, Object> map) {
+		
 		map.put("campaignList", campaignService.listCampaign());
 
-		return "test";
+		return campaignService.listCampaign();
 	}
 
-	@RequestMapping("/get/{name}")
-	public String deletePerson(@PathVariable("name") String name) {
+	@RequestMapping("/{name}")
+	public  @ResponseBody  Campaign getCampaign(@PathVariable("name") String name) {
 
 		System.out.println(campaignService.getCampaign(name));
 
-		return "test";
+		return campaignService.getCampaign(name);
 	}
+	
+	@RequestMapping("/get/{id}")
+	public  @ResponseBody  List<Campaign> getCampaignDetails(@PathVariable("id") Integer id) {
+		return campaignService.getCampaignDetails(id);
+	}
+	
+	@RequestMapping("/donationRaised/{id}")
+	public  @ResponseBody Campaign  getDonationRaised(@PathVariable("id") Integer id) {
+		return campaignService.getDonationRaised(id);
+	}
+
 
 }

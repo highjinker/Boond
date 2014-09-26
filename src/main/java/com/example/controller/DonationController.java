@@ -8,6 +8,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.model.Donors;
 import com.example.service.DonationService;
@@ -20,7 +21,7 @@ public class DonationController {
 	private DonationService donationService;
 	
 	@RequestMapping(value="/recentdonors", method=RequestMethod.GET)
-	public String getRecentDonors(@RequestParam("campaignId")int campaignId, @RequestParam("count")int count, ModelMap model){
+	public @ResponseBody List<Donors> getRecentDonors(@RequestParam("campaignId")int campaignId, @RequestParam("count")int count, ModelMap model){
 	List<Donors> donorList = donationService.getRecentDonors(campaignId, count);
 	String output;
 	if(donorList == null || donorList.isEmpty()){
@@ -30,7 +31,7 @@ public class DonationController {
 	}
 	
 	model.put("message", output);
-	return "test";
+	return donorList;
 	}
 
 }

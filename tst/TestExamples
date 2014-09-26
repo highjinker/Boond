@@ -1,1 +1,5 @@
 http://localhost:8080/user/1	
+http://localhost:8080/karma/recentdonors?campaignId=1&count=2
+http://localhost:8080/campaign/listcampaign
+http://localhost:8080/campaign/boond
+http://localhost:8080/campaign/donationRaised/1

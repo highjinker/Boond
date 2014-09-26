@@ -22,7 +22,7 @@ public class UserController {
 		UserAccount user = userService.getUserAccountDetails(id);
 		String output;
 		if(user == null){
-			output = "No User founs with userId: "+ id;
+			output = "No User found with userId: "+ id;
 		}else{
 			output = user.getFirstName() + " " + user.getLastName() + " " + user.getEmailId() + " " + user.getLastUpdatedDate();
 		}
