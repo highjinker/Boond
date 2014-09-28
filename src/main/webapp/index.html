@@ -5,6 +5,10 @@
 <link rel="stylesheet" type="text/css" href="./style/index.css">
 <script type="text/javascript" src="./js/jquery.min.js"></script>
 <script type="text/javascript" src="./js/bootstrap.js"></script>
+<script type="text/javascript" src="./script/MyUtils.js"></script>
+<script type="text/javascript" src="./script/xhrHelper.js"></script>
+<script type="text/javascript" src="./script/index.js" />"></script>
+
 </head>
 
 <body>
@@ -12,7 +16,7 @@
 		<div  class="container">
 		<table id='navTable' border='0px'>
 		<tr class='left'><td>BOOND</td>
-		<td class='center' width="70%">Water Donated Until Now: 100 litres</td>
+		<td class='center' width="70%"><label id="donationStatus">A</label></td>
 		<td class='left'>Sign Up</td>
 		<td class='left'>Sign In</td>
 		<td class='right' width="2%"><img class='icon' src="./images/fb.png"></td>
@@ -71,25 +75,25 @@
 		<div class="panel-heading">
 			<h3 class="panel-title">Donate</h3>
 		</div>
-		<div class="panel-body">Panel content</div>
+		<div class="panel-body" align="center">
+			<div id="donateStatus"></div>
+			<br>
+			<button type="button" class="btn btn-lg btn-primary">DONATE</button>
+		</div>
 	</div>
 	
 	<div id="ngoDiv" class="panel panel-default">
 		<div class="panel-heading">
 			<h3 class="panel-title">NGOs</h3>
 		</div>
-		<div class="panel-body">Panel content</div>
+		<div class="panel-body">This panel will contain details about the NGO</div>
 	</div>
 	
 	<div id="recentDonorsDiv" class="panel panel-default">
 		<div class="panel-heading">
 			<h3 class="panel-title">Recent Donors</h3>
 		</div>
-		<div class="panel-body">Panel content</div>
+		<div class="panel-body" align="center"></div>
 	</div>
-	
-	<div id="donateDiv">DONATE</div>
-	<div id="ngoDiv">NGO DETAILS</div>
-	<div id="recentDonorsDiv">DONOR DETAILS</div>
 </body>
 </html>
