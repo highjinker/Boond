@@ -40,3 +40,15 @@ isDonationCompleted boolean NOT NULL,
 createdDate TIMESTAMP NOT NULL,
 lastUpdatedDate TIMESTAMP NOT NULL
 );
+
+CREATE TABLE organization(
+
+id serial PRIMARY KEY,
+
+orgId integer NOT NULL,
+
+key VARCHAR (255) UNIQUE NOT NULL,
+
+value VARCHAR (10000) UNIQUE NOT NULL
+
+);
