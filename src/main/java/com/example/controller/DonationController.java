@@ -21,8 +21,8 @@ public class DonationController {
 	private DonationService donationService;
 	
 	@RequestMapping(value="/recentdonors", method=RequestMethod.GET)
-	public @ResponseBody List<Donors> getRecentDonors(@RequestParam("campaignId")int campaignId, @RequestParam("count")int count, ModelMap model){
-	List<Donors> donorList = donationService.getRecentDonors(campaignId, count);
+	public @ResponseBody List<Object[]> getRecentDonors(@RequestParam("campaignId")int campaignId, @RequestParam("count")int count, ModelMap model){
+	List<Object[]> donorList = donationService.getRecentDonors(campaignId, count);
 	String output;
 	if(donorList == null || donorList.isEmpty()){
 		output = "No donors found with campaignId: "+ campaignId;

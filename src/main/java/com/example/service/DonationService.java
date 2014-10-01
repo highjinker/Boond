@@ -6,6 +6,6 @@ import com.example.model.Donors;
 
 public interface DonationService {
 	
-	public List<Donors> getRecentDonors(int campaignId,int count);
+	public List<Object[]> getRecentDonors(int campaignId,int count);
 
 }

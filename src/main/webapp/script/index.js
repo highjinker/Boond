@@ -5,39 +5,90 @@ if(window.location.host == ""){
 }
 
 function getDonorDetailHTML(donorDetail){
-	return "<p>User ID " + donorDetail["userAccountId"] + " donated Rs." + donorDetail["donationAmount"] + "</p><hr>"; 
+	detailStr =  "<p><h3>&#8377; " + donorDetail[0]["donationAmount"] + "</h3></p>" +
+			"<p>by " + donorDetail[1]["firstName"] + " " + donorDetail[1]["lastName"]+ "</p>";
+	email = donorDetail[1]["emailId"];
+	if(!MyUtils.isEmptyString(email)){
+		detailStr += "<p><a href='mailto:" + email + "'>Email</a></p>"
+	}
+	return detailStr + "<hr>";
 }
 
-getDonorsCallback = function(data){
-	var donorDetails = JSON.parse(data);
-	console.log(donorDetails);
-	var donorDiv = $('#recentDonorsDiv .panel-body');
-	for(id in donorDetails){
-		console.log(donorDetails[id]);
-		var detailHTML = getDonorDetailHTML(donorDetails[id]);
-		console.log(detailHTML);
-		donorDiv.append(detailHTML);
+populateCampaignDetails = function(data){
+	if(!MyUtils.isEmptyString(data)){
+		var campaignDetails = JSON.parse(data);
+		document.getElementById("campaignName").innerHTML = "<b>" + MyUtils.getValueForKey(campaignDetails, Constants.campaignName) + "</b>";
+		document.getElementById("campaignDescription").innerHTML = "<br>" + MyUtils.getValueForKey(campaignDetails, Constants.campaignDescription);
+		populateDonationStatus(MyUtils.getValueForKey(campaignDetails, Constants.campaignDonationRaised));
 	}
 }
 
-populateDonationStatus = function(data){
-	var donationStatus = JSON.parse(data);
-	document.getElementById("donationStatus").innerHTML = donationStatus["value"] + " litres raised";
-	document.getElementById("donateStatus").innerHTML = "<h3>We've already raised "
-		+ donationStatus["value"] + " litres</h3><br> Help us donate more.";
+populateDonationStatus = function(donationStatus){
+	if(MyUtils.isNull(donationStatus)){
+		document.getElementById("donationStatus").innerHTML = "You're the first donor!";
+		document.getElementById("donateStatus").innerHTML = "<h3>No one has donated yet.</h3><br> " +
+		"Be the first one!";
+	} else {
+		document.getElementById("donationStatus").innerHTML = donationStatus + " litres raised";
+		document.getElementById("donateStatus").innerHTML = "<h3>We've already raised "
+			+ donationStatus + " litres</h3><br> Help us donate more.";
+	}
+}
+
+getDonorsCallback = function(data){
+	if(!MyUtils.isEmptyString(data)){
+		var donorDetails = JSON.parse(data);
+		var donorDiv = $('#recentDonorsDiv .panel-body');
+		for(id in donorDetails){
+			var detailHTML = getDonorDetailHTML(donorDetails[id]);
+			donorDiv.append(detailHTML);
+		}
+	}
+}
+
+donateForCause = function(){
+	var donateDiv = document.createElement('div');
+	donateDiv.id = 'donationDiv';
+	donateDiv.style.zIndex = 20;
+	donateDiv.hidden = true;
+	donateDiv.style.background = "rgba(62,118,194,0.9)";
+	donateDiv.style.position = 'absolute';
+	donateDiv.style.top = '50px';
+	donateDiv.style.left = '50px';
+	donateDiv.style.height = '50px';
+	donateDiv.style.width = '50px';
+	donateDiv.style.border = "5px solid";
+	donateDiv.style.borderRadius = "25px";
+	donateDiv.style.borderColor = "rgb(62,118,250)";
+	document.body.appendChild(donateDiv);
+	localHeight = window.innerHeight * 0.7;
+	localWidth = window.innerWidth * 0.5; 
+	localTop = (window.innerHeight - localHeight)/2;
+	localLeft = (window.innerWidth - localWidth)/2;
+	donateDiv.hidden = false;
+    $("#donationDiv").animate({width:localWidth,height:localHeight,top:(localTop),left:(localLeft)}, "slow");
+    var donateDiv = document.createElement('div');
 }
 
 onload = function(){
+	//donateForCause();
+	campaignId = 1;
 	if(isProduction){
-		xhrHelper.runHttpRequest("GET", "http://localhost:8080/karma/recentdonors?campaignId=1&count=2", false, getDonorsCallback, null);
-		xhrHelper.runHttpRequest("GET", "http://localhost:8080/campaign/donationRaised/1", false, populateDonationStatus, null);
+		xhrHelper.runHttpRequest("GET", "http://"+window.location.host+"/karma/recentdonors?campaignId="+campaignId+"&count=2", false, getDonorsCallback, null);
+		xhrHelper.runHttpRequest("GET", "http://"+window.location.host+"/campaign/donationRaised/"+campaignId, false, populateDonationStatus, null);
 	} else {
 		//test data here
-		var donorDetails = [{"id":2,"campaignid":1,"userAccountId":2,"donationAmount":79.0,"createdDate":1411543714201,"lastUpdatedDate":1411543714201,"donationAnonymous":false,"donationCompleted":true},{"id":1,"campaignid":1,"userAccountId":1,"donationAmount":99.0,"createdDate":1411543082003,"lastUpdatedDate":1411543082003,"donationAnonymous":false,"donationCompleted":true}]
+		var donorDetails = [[{"id":1,"campaignid":campaignId,"userAccountId":1,"donationAmount":99.0,"createdDate":1411720472111,"lastUpdatedDate":1411720472111,"donationAnonymous":false,"donationCompleted":true},{"id":1,"firstName":"Ankur","lastName":"Bansal","emailId":"aankur.bansal@gmail.com","createdDate":1411720443673,"lastUpdatedDate":1411720443673}]]
 		getDonorsCallback(JSON.stringify(donorDetails));
-		var donationStatus = {"id":3,"campaignid":1,"key":"donationRaised","value":"12.23"};
+		var donationStatus = {"id":3,"campaignid":campaignId,"key":"donationRaised","value":"12.23"};
 		populateDonationStatus(JSON.stringify(donationStatus));
+		var campaignDetails = [{"id":1,"campaignid":campaignId,"key":"name","value":"Boond"},{"id":3,"campaignid":campaignId,"key":"donationRaised","value":"12.23"},{"id":4,"campaignid":1,"key":"description","value":"Every water pump you help to install, every vegetable plot you dig, every campaign you add your voice to, every child you send to school creates new opportunities for communities worldwide"}];
+		populateCampaignDetails(JSON.stringify(campaignDetails));
 	}
 }
 
 $(document).load(onload);
+
+loadNavigationBar = function(){
+	document.getElementById("navigationBar").innerHTML = FileHelper.readStringFromFileAtPath("./header.html");
+}
