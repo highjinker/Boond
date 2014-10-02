@@ -2,9 +2,24 @@
 	<div class="container">
 		<table id='navTable' border='0px'>
 			<tr class='left'>
-				<td><div id='campaignName'></div></td>
+				<td>
+					<div class="btn-group" id='homeDropDownDiv'>
+						<button type="button" class="btn btn-default dropdown-toggle"
+							data-toggle="dropdown">
+							My Daan<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="#">About</a></li>
+							<li><a href="#">Sign In</a></li>
+							<li><a href="javascript:loadSignUpDiv();">Sign Up</a></li>
+							<li class="divider"></li>
+							<li><a href="#">Search</a></li>
+						</ul>
+					</div>
+				</td>
+				<td><div><label id='campaignName'></label></div></td>
 				<td class='center' width="70%"><label id="donationStatus"></label></td>
-				<td class='left'>Sign Up</td>
+				<td class='left'><a href="javascript:loadSignUpDiv();"><font color="white">Sign Up</font></a></td>
 				<td class='left'>Sign In</td>
 				<td class='right' width="2%"><img class='icon'
 					src="./images/fb.png"></td>

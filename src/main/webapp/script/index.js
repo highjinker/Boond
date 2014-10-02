@@ -67,15 +67,29 @@ donateForCause = function(){
 	localLeft = (window.innerWidth - localWidth)/2;
 	donateDiv.hidden = false;
     $("#donationDiv").animate({width:localWidth,height:localHeight,top:(localTop),left:(localLeft)}, "slow");
-    var donateDiv = document.createElement('div');
+    donateDiv.style.fontSize = '30px';
+    
+    
 }
 
+campaignId=1;
 onload = function(){
 	//donateForCause();
-	campaignId = 1;
+//	document.getElementById("myCarousel").innerHTML = '<input class="borderlessText" type="text" placeholder="John Doe"'+
+//	'	maxlength="100"><br>'+
+//	'<input class="borderlessText" type="text" placeholder="Email"'+
+//	'	maxlength="100">'+
+//	'<br> &#8377;'+
+//	'<input class="borderlessText" type="text" placeholder="Donation"'+
+//	'	maxlength="100">'+
+//	'<br>'+
+//	'<input id="cc" type="checkbox" value="1" id="checkboxFourInput" name="" />'+
+//	'Anonymous donation?'
+	//loadSignUpDiv();
 	if(isProduction){
 		xhrHelper.runHttpRequest("GET", "http://"+window.location.host+"/karma/recentdonors?campaignId="+campaignId+"&count=2", false, getDonorsCallback, null);
-		xhrHelper.runHttpRequest("GET", "http://"+window.location.host+"/campaign/donationRaised/"+campaignId, false, populateDonationStatus, null);
+		xhrHelper.runHttpRequest("GET", "http://"+window.location.host+"/campaign/get/"+campaignId, false, populateCampaignDetails, null);
+		//xhrHelper.runHttpRequest("GET", "http://"+window.location.host+"/campaign/donationRaised/"+campaignId, false, populateDonationStatus, null);
 	} else {
 		//test data here
 		var donorDetails = [[{"id":1,"campaignid":campaignId,"userAccountId":1,"donationAmount":99.0,"createdDate":1411720472111,"lastUpdatedDate":1411720472111,"donationAnonymous":false,"donationCompleted":true},{"id":1,"firstName":"Ankur","lastName":"Bansal","emailId":"aankur.bansal@gmail.com","createdDate":1411720443673,"lastUpdatedDate":1411720443673}]]
@@ -90,5 +104,49 @@ onload = function(){
 $(document).load(onload);
 
 loadNavigationBar = function(){
-	document.getElementById("navigationBar").innerHTML = FileHelper.readStringFromFileAtPath("./header.html");
+	document.getElementById("navigationBar").innerHTML = FileHelper.readStringFromFileAtPath("header.html");
+}
+
+loadSignUpDiv = function(){
+	document.getElementById("signUpScreen").innerHTML = FileHelper.readStringFromFileAtPath("signUp.html");
+	document.getElementById("signUpScreen").hidden = false;
+	console.log(document.getElementById("signUpDiv").style.height);
+}
+
+function closeSignUp(){
+	document.getElementById("signUpScreen").hidden = true;
+}
+
+function signUpUser(){
+	if(validate()){
+		console.log("validated");
+		document.getElementById('signUpAlert').hidden = true;
+	} else {
+		document.getElementById('signUpAlert').hidden = false;
+	}
+}
+
+function validate(){
+	validationSucceded = true;
+	msg="";
+	var guestName = document.getElementById('name');
+	var guestEmail = document.getElementById('email');
+	var password = document.getElementById('password');
+	var confirmPassword = document.getElementById('confirmPassword');
+	console.log(validationSucceded);
+	validationSucceded = MyUtils.validateEmail(guestEmail) && validationSucceded;
+	console.log(validationSucceded);
+	validationSucceded = MyUtils.validateNotNull(guestName) && validationSucceded;
+	console.log(validationSucceded);
+	validationSucceded = MyUtils.validateNotNull(guestEmail) && validationSucceded;
+	console.log(validationSucceded);
+	validationSucceded = MyUtils.validateNotNull(password) && validationSucceded;
+	console.log(validationSucceded);
+	validationSucceded = MyUtils.validateNotNull(confirmPassword) && validationSucceded;
+	console.log(validationSucceded);
+	validationSucceded = MyUtils.passwordLength(password, 8, 100) && validationSucceded;
+	console.log(validationSucceded);
+	validationSucceded = MyUtils.validateSamePassword && validationSucceded;
+	console.log(validationSucceded);
+	return validationSucceded;
 }

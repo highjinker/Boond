@@ -1,0 +1,26 @@
+<div id='signUpDiv' align="center">
+	<div id="signUpDivHeader">
+		<h3>MY DAAN</h3>
+		<button type="button" class="btn btn-default" id='closeSignUp' onclick="closeSignUp()">
+      <span class="glyphicon glyphicon-remove"></span>
+   </button>
+	</div>
+	<div id="signUpDivContent">
+		<br>
+		<div class="alert alert-danger alert-dismissible" role="alert" id='signUpAlert' hidden=""></div>
+		<input id='name' class="borderlessText" type="text" placeholder="John Doe" maxlength="100"
+			onblur="MyUtils.validateNotNull(this)">
+		<input id='email' class="borderlessText" type="text" placeholder="Email" maxlength="100"
+			onblur="MyUtils.validateNotNull(this);MyUtils.validateEmail(this)">
+		<input id='password' class="borderlessText" type="password" placeholder="Password" maxlength="100" 
+			onblur="MyUtils.validateNotNull(this);MyUtils.passwordLength(this,8,100)">
+		<input id='confirmPassword' class="borderlessText" type="password" placeholder="Confirm Password" maxlength="100"
+			onblur="MyUtils.validateSamePassword();MyUtils.passwordLength(this,8,100)">
+		<br>
+		<br>
+	</div>
+	<div id="signUpDivFooter">
+		<button type="button" class="btn btn-lg btn-primary" onclick="signUpUser()">Sign Up</button>
+		<button type="button" class="btn btn-lg btn-primary">Use Facebook</button>
+	</div>
+</div>
