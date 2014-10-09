@@ -29,10 +29,10 @@ MyUtils.validateNotNull = function(item, elementId){
 			item.placeholder = item.placeholder + " - Required"
 		}
 		msg="All fields are mandatory";
-		MyUtils.showError('signUpAlert', "Required fields cannot be blank!!");
+		MyUtils.showError('signUpAlert', item.placeholder + " cannot be blank");
 	}else {
 		item.style.background="rgba(1,1,1,0)";
-		MyUtils.hideError('signUpAlert');
+		MyUtils.hideError('signUpAlert', item.placeholder + " cannot be blank");
 	}
 	return validationSucceded;
 }
@@ -53,7 +53,7 @@ MyUtils.validateEmail = function(item){
 		MyUtils.showError('signUpAlert', "The email address entered by you is not valid!!");
 	} else {
 		item.style.background="rgba(1,1,1,0)";
-		MyUtils.hideError('signUpAlert');
+		MyUtils.hideError('signUpAlert', "The email address entered by you is not valid!!");
 	}
 	return vc;
 }
@@ -65,14 +65,14 @@ MyUtils.passwordLength = function(item, min, max){
 		MyUtils.showError('signUpAlert', "The value cannot be less than " + min +" characters!!");
 		vc = false;
 	}else {
-		MyUtils.hideError('signUpAlert');
+		MyUtils.hideError('signUpAlert', "The value cannot be less than " + min +" characters!!");
 	}
 	if(item.value.length > max){
 		item.style.background=errorBgColor;
 		MyUtils.showError('signUpAlert', "The value cannot be greater than " + max +" characters!!");
 		vc = false;
 	}else {
-		MyUtils.hideError('signUpAlert');
+		MyUtils.hideError('signUpAlert', "The value cannot be greater than " + max +" characters!!");
 	}
 	return vc;
 }
@@ -90,20 +90,45 @@ MyUtils.validateSamePassword = function(){
 			MyUtils.showError('signUpAlert', "Passwords don't match!!");
 			vc = false;
 		} else {
-			MyUtils.hideError('signUpAlert');
+			MyUtils.hideError('signUpAlert', "Passwords don't match!!");
 			vc = false;
 		}
 	}else {
-		MyUtils.hideError('signUpAlert');
+		MyUtils.hideError('signUpAlert', "Passwords don't match!!");
 	}
 	return vc;
 }
 
+var errors = [];
 MyUtils.showError = function(reporterID, message){
-	document.getElementById(reporterID).innerHTML = message
-	document.getElementById(reporterID).hidden = false;
+	if(errors.indexOf(message) < 0){
+		errors.push(message);
+	}
+	updateErrorMessage(reporterID, errors);
 }
 
-MyUtils.hideError = function(reporterID){
-	document.getElementById(reporterID).hidden = true;
+MyUtils.hideError = function(reporterID, message){
+	index = errors.indexOf(message)
+	if(index > -1){
+		errors.splice(index, 1)
+	}
+	updateErrorMessage(reporterID, errors);
+}
+
+function updateErrorMessage(reporterID, errorArr){
+	if(errors.length > 0){
+		document.getElementById(reporterID).innerHTML = MyUtils.getErrorMessage(errors);
+		document.getElementById(reporterID).hidden = false;
+	} else {
+		document.getElementById(reporterID).hidden = true;
+	}
+}
+
+MyUtils.getErrorMessage = function(errorArr){
+	var html = "<ul>";
+	for(index in errorArr){
+		html += "<li>"+errorArr[index]+"</li>";
+	}
+	html += "</ul>";
+	return html;
 }
