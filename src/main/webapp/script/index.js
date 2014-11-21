@@ -1,12 +1,6 @@
-var isProduction = true;
-if(window.location.host == ""){
-	console.log("Running in test");
-	isProduction = false;
-}
-
 function getDonorDetailHTML(donorDetail){
 	detailStr =  "<p><h3>&#8377; " + donorDetail[0]["donationAmount"] + "</h3></p>" +
-			"<p>by " + donorDetail[1]["firstName"] + " " + donorDetail[1]["lastName"]+ "</p>";
+	"<p>by " + donorDetail[1]["firstName"] + " " + donorDetail[1]["lastName"]+ "</p>";
 	email = donorDetail[1]["emailId"];
 	if(!MyUtils.isEmptyString(email)){
 		detailStr += "<p><a href='mailto:" + email + "'>Email</a></p>"
@@ -66,10 +60,10 @@ donateForCause = function(){
 	localTop = (window.innerHeight - localHeight)/2;
 	localLeft = (window.innerWidth - localWidth)/2;
 	donateDiv.hidden = false;
-    $("#donationDiv").animate({width:localWidth,height:localHeight,top:(localTop),left:(localLeft)}, "slow");
-    donateDiv.style.fontSize = '30px';
-    
-    
+	$("#donationDiv").animate({width:localWidth,height:localHeight,top:(localTop),left:(localLeft)}, "slow");
+	donateDiv.style.fontSize = '30px';
+
+
 }
 
 campaignId=1;
@@ -86,9 +80,10 @@ onload = function(){
 //	'<input id="cc" type="checkbox" value="1" id="checkboxFourInput" name="" />'+
 //	'Anonymous donation?'
 	//loadSignUpDiv();
-	if(isProduction){
-		xhrHelper.runHttpRequest("GET", "http://"+window.location.host+"/karma/recentdonors?campaignId="+campaignId+"&count=2", false, getDonorsCallback, null);
-		xhrHelper.runHttpRequest("GET", "http://"+window.location.host+"/campaign/get/"+campaignId, false, populateCampaignDetails, null);
+	if(MyUtils.isProduction){
+		initFB();
+		xhrHelper.runHttpRequest("GET", "http://"+window.location.host+"/karma/recentdonors?campaignId="+campaignId+"&count=2", false, getDonorsCallback, null, null, null, null);
+		xhrHelper.runHttpRequest("GET", "http://"+window.location.host+"/campaign/get/"+campaignId, false, populateCampaignDetails, null, null, null, null);
 		//xhrHelper.runHttpRequest("GET", "http://"+window.location.host+"/campaign/donationRaised/"+campaignId, false, populateDonationStatus, null);
 	} else {
 		//test data here
@@ -99,6 +94,7 @@ onload = function(){
 		var campaignDetails = [{"id":1,"campaignid":campaignId,"key":"name","value":"Boond"},{"id":3,"campaignid":campaignId,"key":"donationRaised","value":"12.23"},{"id":4,"campaignid":1,"key":"description","value":"Every water pump you help to install, every vegetable plot you dig, every campaign you add your voice to, every child you send to school creates new opportunities for communities worldwide"}];
 		populateCampaignDetails(JSON.stringify(campaignDetails));
 	}
+	User.populate();
 }
 
 $(document).load(onload);
@@ -107,10 +103,15 @@ loadNavigationBar = function(){
 	document.getElementById("navigationBar").innerHTML = FileHelper.readStringFromFileAtPath("header.html");
 }
 
-loadSignUpDiv = function(){
-	document.getElementById("signUpScreen").innerHTML = FileHelper.readStringFromFileAtPath("signUp.html");
-	document.getElementById("signUpScreen").hidden = false;
-	console.log(document.getElementById("signUpDiv").style.height);
+loginOrOut = function(){
+	option = document.getElementById("loginOrOut").innerHTML;
+	if(option == 'Login'){
+		document.getElementById("signUpScreen").innerHTML = FileHelper.readStringFromFileAtPath("signUp.html");
+		document.getElementById("signUpScreen").hidden = false;
+	} else {
+		User.logout();
+	}
+	
 }
 
 function closeSignUp(){
@@ -118,35 +119,22 @@ function closeSignUp(){
 }
 
 function signUpUser(){
-	if(validate()){
-		console.log("validated");
-		document.getElementById('signUpAlert').hidden = true;
+	if(MyUtils.isProduction){
+		User.login();
 	} else {
-		document.getElementById('signUpAlert').hidden = false;
+		MyUtils.populateMockUserData();
+		closeSignUp();
 	}
+
 }
 
-function validate(){
-	validationSucceded = true;
-	msg="";
-	var guestName = document.getElementById('name');
-	var guestEmail = document.getElementById('email');
-	var password = document.getElementById('password');
-	var confirmPassword = document.getElementById('confirmPassword');
-	console.log(validationSucceded);
-	validationSucceded = MyUtils.validateEmail(guestEmail) && validationSucceded;
-	console.log(validationSucceded);
-	validationSucceded = MyUtils.validateNotNull(guestName) && validationSucceded;
-	console.log(validationSucceded);
-	validationSucceded = MyUtils.validateNotNull(guestEmail) && validationSucceded;
-	console.log(validationSucceded);
-	validationSucceded = MyUtils.validateNotNull(password) && validationSucceded;
-	console.log(validationSucceded);
-	validationSucceded = MyUtils.validateNotNull(confirmPassword) && validationSucceded;
-	console.log(validationSucceded);
-	validationSucceded = MyUtils.passwordLength(password, 8, 100) && validationSucceded;
-	console.log(validationSucceded);
-	validationSucceded = MyUtils.validateSamePassword && validationSucceded;
-	console.log(validationSucceded);
-	return validationSucceded;
+function showNewUserInput(){
+	checked = document.getElementById('newUserChk').checked;
+	if(checked){
+		document.getElementById('name').hidden = false;
+		document.getElementById('confirmPassword').hidden = false;
+	} else {
+		document.getElementById('name').hidden = true;
+		document.getElementById('confirmPassword').hidden = true;
+	}
 }

@@ -2,6 +2,12 @@ function MyUtils() {}
 
 errorBgColor="#f2dede";
 
+MyUtils.isProduction = true;
+if(window.location.host == ""){
+	console.log("Running in test");
+	MyUtils.isProduction = false;
+}
+
 MyUtils.isNull = function(object) {
     return object == null;
 };
@@ -131,4 +137,9 @@ MyUtils.getErrorMessage = function(errorArr){
 	}
 	html += "</ul>";
 	return html;
+}
+
+MyUtils.populateMockUserData = function(){
+	var testData = {"id":1,"firstName":"Soumya","lastName":"Shukla","userIdentifier":"some@email.com","createdDate":null,"lastUpdatedDate":null};
+	User.populateUserInfo(JSON.stringify(testData));
 }

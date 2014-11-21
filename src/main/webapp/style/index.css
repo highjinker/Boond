@@ -141,3 +141,7 @@ body {
     background-color: #428bca;
     border-color: #357ebd;
 }
+
+#loginOrOut {
+	cursor: pointer;
+}

@@ -14,7 +14,7 @@ public class UserAccount {
 	private Integer id;
 	private String firstName;
 	private String lastName;
-	private String emailId;
+	private String userIdentifier;
 	private Date createdDate;  
 	private Date lastUpdatedDate;
 	
@@ -37,11 +37,11 @@ public class UserAccount {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-	public String getEmailId() {
-		return emailId;
+	public String getUserIdentifier() {
+		return userIdentifier;
 	}
-	public void setEmailId(String emailId) {
-		this.emailId = emailId;
+	public void setUserIdentifier(String userIdentifier) {
+		this.userIdentifier = userIdentifier;
 	}
 	public Date getCreatedDate() {
 		return createdDate;
