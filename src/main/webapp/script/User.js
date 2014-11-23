@@ -5,20 +5,19 @@ User.source = null;
 
 User.populateUserInfo = function(userData, source){
 	User.data = JSON.parse(userData);
+	localStorage.setItem("userData", userData);
 	User.source = source;
 	User.populate();
 }
 
 User.populate = function(){
+	if(!MyUtils.isNull(localStorage.getItem('userData'))){
+		User.data = JSON.parse(localStorage.getItem('userData'));
+	}
 	if(!MyUtils.isNull(User.data)){
-		console.log(User.data)
-		if(User.data.status == 200 || User.source == 'facebook'){
-			document.getElementById("helloMsg").innerHTML = "Hello, " + User.data.response["firstName"];
-			document.getElementById("loginOrOut").innerHTML = "Logout";
-			closeSignUp();
-		} else {
-			MyUtils.showError('signUpAlert', "User with email: " + User.data.response.userIdentifier + " already exists. Please login using your password.");
-		}
+		document.getElementById("helloMsg").innerHTML = "Hello, " + User.data.response["firstName"];
+		document.getElementById("loginOrOut").innerHTML = "Logout";
+		closeSignUp();
 	} else {
 		console.log("No user information");
 	}
@@ -32,16 +31,22 @@ User.login = function(){
 		var guestEmail = document.getElementById('email').value;
 		var password = document.getElementById('password').value;
 		var confirmPassword = document.getElementById('confirmPassword').value;
+		var checked = document.getElementById('newUserChk').checked;
 
-		var userDetail = {};
-		userDetail["firstName"] = nameArr[0]
-		if(nameArr.length > 1){
-			userDetail["lastName"] = nameArr[nameArr.length - 1]
+		if(checked){
+
+			var userDetail = {};
+			userDetail["firstName"] = nameArr[0]
+			if(nameArr.length > 1){
+				userDetail["lastName"] = nameArr[nameArr.length - 1]
+			}
+			userDetail["userIdentifier"] = guestEmail;
+			console.log(userDetail);
+			headers = {"Accept":"application/json","Content-type":"application/json"}
+			xhrHelper.runHttpRequest('POST', "http://"+window.location.host+"/user/addUser" , false, User.populateUserInfo, userDetail, headers, null, null)
+		} else {
+
 		}
-		userDetail["userIdentifier"] = guestEmail;
-		console.log(userDetail);
-		headers = {"Accept":"application/json","Content-type":"application/json"}
-		xhrHelper.runHttpRequest('POST', "http://"+window.location.host+"/user/addUser" , false, User.populateUserInfo, userDetail, headers, null, null)
 	} else {
 		document.getElementById('signUpAlert').hidden = false;
 	}
@@ -49,6 +54,7 @@ User.login = function(){
 
 User.logout = function(){
 	User.data = null;
+	localStorage.removeItem("userData");
 	document.getElementById("loginOrOut").innerHTML = "Login";
 	document.getElementById("helloMsg").innerHTML = "Hello, Guest";
 }

@@ -6,9 +6,9 @@
    </button>
 	</div>
 	<div id="signUpDivContent">
-		<br>
+		<!-- <br>
 		<div class="alert alert-danger alert-dismissible" role="alert" id='signUpAlert' hidden=""></div>
-		<!-- <div class="checkbox"><label><input type="checkbox"> Check me out</label></div> -->
+		<div class="checkbox"><label><input type="checkbox"> Check me out</label></div>
 		<input type="checkbox" id="newUserChk" onchange="showNewUserInput()"> I am a new user<br>
 		<input id='name' class="borderlessText" type="text" placeholder="Full name" maxlength="100"
 			onblur="MyUtils.validateNotNull(this)" hidden="true">
@@ -17,12 +17,13 @@
 		<input id='password' class="borderlessText" type="password" placeholder="Password" maxlength="100" 
 			onblur="MyUtils.validateNotNull(this);MyUtils.passwordLength(this,1,100)">
 		<input id='confirmPassword' class="borderlessText" type="password" placeholder="Confirm Password" maxlength="100"
-			onblur="MyUtils.validateSamePassword();MyUtils.passwordLength(this,1,100)" hidden="true">
+			onblur="MyUtils.validateSamePassword();MyUtils.passwordLength(this,1,100)" hidden="true"> 
 		<br>
-		<br>
+		<br>-->
 	</div>
 	<div id="signUpDivFooter">
-		<button type="button" class="btn btn-lg btn-primary" onclick="signUpUser()">Login</button>
+		<!-- <button type="button" class="btn btn-lg btn-primary" onclick="signUpUser()">Login</button> -->
 		<button type="button" class="btn btn-lg btn-primary" onclick="loginWithFB();closeSignUp();">Use Facebook</button>
+		<button type="button" class="btn btn-lg btn-primary" >Use Twitter</button>
 	</div>
 </div>

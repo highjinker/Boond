@@ -19,6 +19,7 @@
 	opacity: 1;
 	position: relative;
 	top: 20%;
+	overflow: hidden;
 }
 
 #signUpDivContent {
@@ -30,6 +31,7 @@
 }
 #signUpDivFooter {
 	padding: 10px 0px 10px 0px;
+	background-color: #a8cae7;
 }
 
 .borderlessText {
